@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import download from "../images/download.svg"
 import link from "../images/link.svg"
 import play from "../images/play.png"
+import { saveAs } from 'file-saver';
 
 function Media( item ){
     const [copySuccess, setCopySuccess] = useState('');
@@ -15,6 +16,12 @@ function Media( item ){
         }
     };
 
+    const saveFile = () => {
+        var FileSaver = require('file-saver');
+        FileSaver.saveAs(
+            "data:video/mp4, {item.download_url} ", "video.mp4"
+    );}
+
     return(
         <div>
             <div className="campaign-media">
@@ -22,9 +29,7 @@ function Media( item ){
                 {item.media_type === "video" ? <img class="campaign-media-playButton" src={play}/> : ""}
             </div>
             <button className="campaign-media-button" onClick={copyToClipboard}><img src={link}/></button>
-            <a target="_blank" href={item.download_url} download>
-                <button className="campaign-media-button"><img src={download}/></button>
-            </a>
+            <button className="campaign-media-button" onClick={saveFile}><img src={download}/></button>
             {copySuccess && alert(copySuccess)}
         </div>
     )
